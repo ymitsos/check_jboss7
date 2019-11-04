@@ -43,6 +43,21 @@ def check_jboss_arguments(params):
     if "password" in params:
         args += "-p %s " % quote_shell_string(params["password"][1])
 
+    if "queue_name" in params:
+        args += "-q %s " % quote_shell_string(params["queue_name"])
+
+    if "queue_type" in params:
+        args += "-Q %s " % quote_shell_string(params["queue_type"])
+
+    if "datasource" in params:
+        args += "-d %s " % quote_shell_string(params["datasource"])
+
+    if "ds_stat_type" in params:
+        args += "-s %s " % quote_shell_string(params["ds_stat_type"])
+
+    if "thread_stat_type" in params:
+        args += "-t %s " % quote_shell_string(params["thread_stat_type"])
+
     return args
 #enddef
 

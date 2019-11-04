@@ -23,6 +23,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
+from cmk.gui.plugins.wato import IndividualOrStoredPassword
+
 group = "activechecks"
 
 register_rule(group,
@@ -31,7 +33,7 @@ register_rule(group,
         title = _("Check JBoss"),
         help = _("This check connects to JBoss admin endpoint to check if running."
                  "The check uses the active check <tt>nagios-plugin-jbossas7</tt>."),
-        optional_keys = [ "action", "port" ],
+        optional_keys = [ "action", "port", "queue_name", "queue_type", "datasource", "ds_stat_type", "thread_stat_type" ],
         elements = [
             ( "description",
               TextUnicode(title = _("Service Description"),
@@ -48,7 +50,43 @@ register_rule(group,
             ),
             ( "action",
                 TextUnicode(
-                    title = _("The action you want to take. Accepted values: server_status, heap_usage, non_heap_usage, eden_space_usage, old_gen_usage, perm_gen_usage, code_cache_usage, gctime, queue_depth, datasource, xa_datasource, threading"),
+                    title = _("The action you want to take."),
+                    help = _("Accepted values: server_status, heap_usage, non_heap_usage, eden_space_usage, old_gen_usage, perm_gen_usage, code_cache_usage, gctime, queue_depth, datasource, xa_datasource, threading"),
+                    allow_empty = True,
+                )
+            ),
+            ( "queue_name",
+                TextAscii(
+                    title = _("Queue name"),
+                    help = _('The queue name to be used when action is set to queue_depth'),
+                    allow_empty = True,
+                )
+            ),
+            ( "queue_type",
+                TextAscii(
+                    title = _("Queue type"),
+                    help = _('Queue type: hortnetq or activemq are currently supported'),
+                    allow_empty = True,
+                )
+            ),
+            ( "datasource",
+                TextAscii(
+                    title = _("Datasource"),
+                    help = _('The datasource name for which you want to retrieve statistics'),
+                    allow_empty = True,
+                )
+            ),
+            ( "ds_stat_type",
+                TextAscii(
+                    title = _("Datasource stat type"),
+                    help = _('Datasource stat type. Available options: ActiveCount, AvailableCount, AverageBlockingTime, AverageCreationTime, CreatedCount, DestroyedCount, MaxCreationTime, MaxUsedCount, MaxWaitTime, TimedOut, TotalBlockingTime, TotalCreationTime'),
+                    allow_empty = True,
+                )
+            ),
+            ( "thread_stat_type",
+                TextAscii(
+                    title = _("Thread stat type"),
+                    help = _('The threading statistics type. Available options: thread-count, peak-thread-count, total-started-thread-count, daemon-thread-count'),
                     allow_empty = True,
                 )
             ),
