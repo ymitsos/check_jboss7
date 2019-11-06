@@ -33,7 +33,7 @@ register_rule(group,
         title = _("Check JBoss"),
         help = _("This check connects to JBoss admin endpoint to check if running."
                  "The check uses the active check <tt>nagios-plugin-jbossas7</tt>."),
-        optional_keys = [ "action", "port", "queue_name", "queue_type", "datasource", "ds_stat_type", "thread_stat_type" ],
+        optional_keys = [ "action", "port", "queue_name", "queue_type", "datasource", "ds_stat_type", "thread_stat_type", "thresholds" ],
         elements = [
             ( "description",
               TextUnicode(title = _("Service Description"),
@@ -102,6 +102,16 @@ register_rule(group,
                     title = _("JBoss Password"),
                     help = _('The password used to connect to the JBoss'),
                     allow_empty = False,
+                )
+            ),
+            ( "thresholds",
+                Tuple(
+                    title = _("State change thresholds"),
+                    elements=[
+                        Integer(title=_("Warning at")),
+                        Integer(title=_("Critical at")),
+                    ],
+                    allow_empty = True,
                 )
             ),
         ]

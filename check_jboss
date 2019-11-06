@@ -58,6 +58,9 @@ def check_jboss_arguments(params):
     if "thread_stat_type" in params:
         args += "-t %s " % quote_shell_string(params["thread_stat_type"])
 
+    if "thresholds" in params:
+        args += "-W %i -C %i " % (params["thresholds"][0], params["thresholds"][1])
+
     return args
 #enddef
 
